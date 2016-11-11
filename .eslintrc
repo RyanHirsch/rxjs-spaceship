@@ -1,0 +1,12 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true
+  },
+  "extends": [ "eslint:recommended", "eslint-config-hirsch" ],
+  "parser": "babel-eslint",
+  "plugins": [
+    "babel"
+  ]
+}

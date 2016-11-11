@@ -9,6 +9,14 @@ module.exports = {
     publicPath: '/assets/',
   },
   module: {
+    preLoaders: [
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+      },
+    ],
     loaders: [
       {
         test: /\.js$/,

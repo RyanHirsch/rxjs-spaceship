@@ -20,7 +20,7 @@ const starStream$ = Rx.Observable
       .map(function() {
         starArray.forEach(updateStarPosition);
         return starArray;
-      })
+      });
   });
 
 const mouseMoves$ = Rx.Observable
@@ -38,7 +38,7 @@ const mouseMoves$ = Rx.Observable
 
 const game$ = Rx.Observable
   .combineLatest(starStream$, mouseMoves$, function(stars, spaceship) {
-    return { stars, spaceship };
+    return { spaceship, stars };
   });
 
 game$.subscribe(renderScene);
@@ -52,13 +52,14 @@ function paintSpaceShip(x, y) {
   drawTriangle(x, y, 20, '#ff0000', 'up');
 }
 
+// eslint-disable-next-line max-params
 function drawTriangle(x, y, width, color, direction) {
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.moveTo(x - width, y);
   ctx.lineTo(x, direction === 'up' ? y - width : y + width);
   ctx.lineTo(x + width, y);
-  ctx.lineTo(x - width,y);
+  ctx.lineTo(x - width, y);
   ctx.fill();
 }
 
@@ -78,10 +79,10 @@ function paintStars(stars) {
   });
 }
 
-function generateStar(x) {
+function generateStar() {
   return {
-    x: parseInt(Math.random() * canvas.width),
-    y: parseInt(Math.random() * canvas.height),
+    x: parseInt(Math.random() * canvas.width, 10),
+    y: parseInt(Math.random() * canvas.height, 10),
     size: Math.random() * 3 + 1,
-  }
+  };
 }

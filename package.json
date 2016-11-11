@@ -5,15 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack-dev-server --inline"
+    "serve": "webpack-dev-server --inline",
+    "lint": "eslint src"
   },
   "author": "Ryan Hirsch <ryan.hirsch@gmail.com> (http://hirsch.io)",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.7",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-3": "^6.17.0",
+    "eslint": "^3.9.1",
+    "eslint-config-hirsch": "^1.1.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-babel": "^3.3.0",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   },
