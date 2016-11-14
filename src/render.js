@@ -4,9 +4,10 @@ canvas.height = window.innerHeight;
 
 const ctx = canvas.getContext('2d');
 
-export function renderScene({ stars, spaceship }) {
+export function renderScene({ enemies, stars, spaceship }) {
   paintStars(stars);
   paintSpaceShip(spaceship.x, spaceship.y);
+  paintEnemies(enemies);
 }
 
 export function initialize() {
@@ -36,4 +37,16 @@ function paintStars(stars) {
   stars.forEach(function(star) {
     ctx.fillRect(star.x, star.y, star.size, star.size);
   });
+}
+
+function paintEnemies(enemies) {
+  enemies.forEach(enemy => {
+    enemy.y = enemy.y + 5;
+    enemy.x = enemy.x + getRandomInt(-15, 15);
+    drawTriangle(enemy.x, enemy.y, 20, '#00FF00', 'down');
+  });
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
