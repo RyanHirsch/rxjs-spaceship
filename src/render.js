@@ -46,6 +46,11 @@ function paintEnemies(enemies) {
     enemy.y = enemy.y + 5;
     enemy.x = enemy.x + getRandomInt(-15, 15);
     drawTriangle(enemy.x, enemy.y, 20, '#00FF00', 'down');
+
+    enemy.shots.forEach(shot => {
+      shot.y = shot.y + shootingSpeed;
+      drawTriangle(shot.x, shot.y, 5, '#00FFFF', 'down');
+    });
   });
 }
 
