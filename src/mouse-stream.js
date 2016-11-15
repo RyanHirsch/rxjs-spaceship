@@ -1,7 +1,6 @@
 import Rx from 'rx';
 
-export default function createMouseStream(canvas) {
-  const heroY = canvas.height - 30;
+export default function createMouseStream(canvas, heroY) {
   return Rx.Observable
     .fromEvent(canvas, 'mousemove')
     .map(function(mouseMoveEvent) {

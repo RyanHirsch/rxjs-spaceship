@@ -1,13 +1,15 @@
+const shootingSpeed = 15;
 const canvas = document.createElement('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const ctx = canvas.getContext('2d');
 
-export function renderScene({ enemies, stars, spaceship }) {
+export function renderScene({ enemies, heroShots, spaceship, stars }) {
   paintStars(stars);
   paintSpaceShip(spaceship.x, spaceship.y);
   paintEnemies(enemies);
+  paintHeroShots(heroShots);
 }
 
 export function initialize() {
@@ -44,6 +46,13 @@ function paintEnemies(enemies) {
     enemy.y = enemy.y + 5;
     enemy.x = enemy.x + getRandomInt(-15, 15);
     drawTriangle(enemy.x, enemy.y, 20, '#00FF00', 'down');
+  });
+}
+
+function paintHeroShots(shots) {
+  shots.forEach(shot => {
+    shot.y = shot.y - shootingSpeed;
+    drawTriangle(shot.x, shot.y, 5, '#FFFF00', 'up');
   });
 }
 
