@@ -4,7 +4,7 @@ import createMouseStream from './mouse-stream';
 import createEnemyStream from './enemy-stream';
 import createShotStream from './shot-stream';
 import createHeroShotStream from './hero-shot-stream';
-import { initialize, renderScene } from './render';
+import { collision, initialize, renderScene } from './render';
 
 const speed = 40;
 const canvas = initialize();
@@ -26,6 +26,15 @@ const game$ = Rx.Observable
       return { spaceship, stars, enemies, heroShots };
     }
   )
-  .sample(speed);
+  .sample(speed)
+  .takeWhile(actors =>
+    !gameOver(actors.spaceship, actors.enemies)
+  );
 
 game$.subscribe(renderScene);
+
+function gameOver(ship, enemies) {
+  return enemies.some(enemy =>
+    collision(ship, enemy) || enemy.shots.some(shot => collision(ship, shot))
+  );
+}
