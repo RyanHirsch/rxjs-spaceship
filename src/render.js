@@ -9,7 +9,7 @@ export function renderScene({ enemies, heroShots, spaceship, stars }) {
   paintStars(stars);
   paintSpaceShip(spaceship.x, spaceship.y);
   paintEnemies(enemies);
-  paintHeroShots(heroShots);
+  paintHeroShots(heroShots, enemies);
 }
 
 export function initialize() {
@@ -45,7 +45,10 @@ function paintEnemies(enemies) {
   enemies.forEach(enemy => {
     enemy.y = enemy.y + 5;
     enemy.x = enemy.x + getRandomInt(-15, 15);
-    drawTriangle(enemy.x, enemy.y, 20, '#00FF00', 'down');
+
+    if(!enemy.isDead) {
+      drawTriangle(enemy.x, enemy.y, 20, '#00FF00', 'down');
+    }
 
     enemy.shots.forEach(shot => {
       shot.y = shot.y + shootingSpeed;
@@ -54,8 +57,16 @@ function paintEnemies(enemies) {
   });
 }
 
-function paintHeroShots(shots) {
+function paintHeroShots(shots, enemies) {
   shots.forEach(shot => {
+    for(let l = 0; l < enemies.length; l++) { // eslint-disable-line no-plusplus
+      const enemy = enemies[l];
+      if(!enemy.isDead && collision(shot, enemy)) {
+        enemy.isDead = true;
+        shot.x = shot.y = -100;
+        break;
+      }
+    }
     shot.y = shot.y - shootingSpeed;
     drawTriangle(shot.x, shot.y, 5, '#FFFF00', 'up');
   });
@@ -63,4 +74,9 @@ function paintHeroShots(shots) {
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function collision(target1, target2) {
+  return (target1.x > target2.x - 20 && target1.x < target2.x + 20) &&
+    (target1.y > target2.y - 20 && target1.y < target2.y + 20);
 }

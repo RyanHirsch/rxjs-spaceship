@@ -17,13 +17,18 @@ export default function createStream({ width, height }) {
       Rx.Observable
         .interval(shootingFreq)
         .subscribe(() => {
-          enemy.shots.push({
-            x: enemy.x,
-            y: enemy.y,
-          });
+          if(!enemy.isDead) {
+            enemy.shots.push({
+              x: enemy.x,
+              y: enemy.y,
+            });
+          }
+          enemy.shots = enemy.shots.filter(isVisible);
         });
 
-      return [ ...enemyArray, enemy ].filter(isVisible);
+      return [ ...enemyArray, enemy ]
+        .filter(isVisible)
+        .filter(enemy => !(enemy.isDead && enemy.shots.length === 0));
     }, []);
 }
 
