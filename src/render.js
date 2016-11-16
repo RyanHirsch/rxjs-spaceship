@@ -1,3 +1,10 @@
+import Rx from 'rx';
+
+const SCORE_INCREASE = 10;
+const scoreSubject = new Rx.BehaviorSubject(0);
+const score = scoreSubject
+  .scan((sum, curr) => sum + curr, 0);
+
 const shootingSpeed = 15;
 const canvas = document.createElement('canvas');
 canvas.width = window.innerWidth;
@@ -10,6 +17,7 @@ export function renderScene({ enemies, heroShots, spaceship, stars }) {
   paintSpaceShip(spaceship.x, spaceship.y);
   paintEnemies(enemies);
   paintHeroShots(heroShots, enemies);
+  paintScore(score);
 }
 
 export function initialize() {
@@ -62,6 +70,7 @@ function paintHeroShots(shots, enemies) {
     for(let l = 0; l < enemies.length; l++) { // eslint-disable-line no-plusplus
       const enemy = enemies[l];
       if(!enemy.isDead && collision(shot, enemy)) {
+        scoreSubject.onNext(SCORE_INCREASE);
         enemy.isDead = true;
         shot.x = shot.y = -100;
         break;
@@ -79,4 +88,10 @@ function getRandomInt(min, max) {
 export function collision(target1, target2) {
   return (target1.x > target2.x - 20 && target1.x < target2.x + 20) &&
     (target1.y > target2.y - 20 && target1.y < target2.y + 20);
+}
+
+function paintScore(score) {
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillText(`Score: ${score}`, 40, 43);
 }
